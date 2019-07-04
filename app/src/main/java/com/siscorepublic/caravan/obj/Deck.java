@@ -42,7 +42,11 @@ public class Deck {
             deck.remove(cardId);
             return card;
         } else {
-            return null;
+            return new HashMap<String, String>(){
+                {
+                    put("none","none");
+                }
+            };
         }
 
     }

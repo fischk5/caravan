@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.siscorepublic.caravan.obj.Deck;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class FullscreenActivity extends AppCompatActivity {
 
@@ -88,14 +89,16 @@ public class FullscreenActivity extends AppCompatActivity {
 
         // Set up the user interaction to manually show or hide the system UI.
         mContentView.setOnClickListener(new View.OnClickListener() {
-            Context context = getApplicationContext();
             @Override
             public void onClick(View view) {
-//                toggle();
+                String cardPrint = "";
                 HashMap<String, String> card = myDeck.draw();
-                mCardView.setText(card.toString());
-                Toast toast = Toast.makeText(context, card.toString(), Toast.LENGTH_SHORT);
-                toast.show();
+                for (Map.Entry<String, String> entry : card.entrySet()) {
+                    String rank = entry.getKey();
+                    String suit = entry.getValue();
+                    cardPrint = rank + " of " + suit;
+                }
+                mCardView.setText(cardPrint);
             }
         });
         findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
@@ -107,13 +110,6 @@ public class FullscreenActivity extends AppCompatActivity {
         delayedHide(100);
     }
 
-    private void toggle() {
-        if (mVisible) {
-            hide();
-        } else {
-            show();
-        }
-    }
     private void hide() {
         // Hide UI first
         ActionBar actionBar = getSupportActionBar();
