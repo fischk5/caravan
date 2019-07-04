@@ -1,6 +1,11 @@
 package com.siscorepublic.caravan.obj;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.Collections;
+
 
 public class Deck {
     HashMap<Integer, HashMap<String, String>> deck;
@@ -10,7 +15,7 @@ public class Deck {
     public Deck() {
         // Populate deck
         deck = new HashMap<>();
-        Integer cardId = 1;
+        int cardId = 1;
         for (int i = 0; i < SUITS.length; i++) {
             for (int j = 0; j < RANKS.length; j++) {
                 HashMap<String, String> entry = new HashMap<>();
@@ -27,10 +32,18 @@ public class Deck {
     }
 
     public HashMap<String, String> draw() {
-        Random rand = new Random();
-        Integer id = rand.nextInt(deck.size())+1;
-        HashMap<String, String> card = deck.get(id);
-        deck.remove(id);
-        return card;
+        if (!deck.isEmpty()) {
+            int maxId = Collections.max(deck.keySet());
+            int cardId = ThreadLocalRandom.current().nextInt(0, maxId + 1);
+            while (!deck.containsKey(cardId)) {
+                cardId = ThreadLocalRandom.current().nextInt(0, maxId + 1);
+            }
+            HashMap<String, String> card = deck.get(cardId);
+            deck.remove(cardId);
+            return card;
+        } else {
+            return null;
+        }
+
     }
 }
